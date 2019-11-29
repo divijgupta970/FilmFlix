@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityOptionsCompat;
+import androidx.core.util.Pair;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -85,8 +86,10 @@ public class PopularMoviesAdapter extends RecyclerView.Adapter<PopularMoviesAdap
                         Result result=resultList.get(getAdapterPosition());
                         Intent intent=new Intent(mCtx,ViewMovieActivity.class);
                         intent.putExtra("movie",result);
-                        String transitionName = mCtx.getString(R.string.transition_image);
-                        ActivityOptionsCompat options=ActivityOptionsCompat.makeSceneTransitionAnimation((Activity)mCtx,ivPoster,transitionName);
+                        String imageTransition = mCtx.getString(R.string.transition_image);
+                        Pair<View,String> p1=Pair.create((View)ivPoster,imageTransition);
+
+                        ActivityOptionsCompat options=ActivityOptionsCompat.makeSceneTransitionAnimation((Activity)mCtx,p1);
                         mCtx.startActivity(intent,options.toBundle());
                     }
 

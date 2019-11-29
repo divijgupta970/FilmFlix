@@ -1,5 +1,6 @@
 package com.example.filmflix.adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -13,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityOptionsCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -83,7 +85,9 @@ public class PopularMoviesAdapter extends RecyclerView.Adapter<PopularMoviesAdap
                         Result result=resultList.get(getAdapterPosition());
                         Intent intent=new Intent(mCtx,ViewMovieActivity.class);
                         intent.putExtra("movie",result);
-                        mCtx.startActivity(intent);
+                        String transitionName = mCtx.getString(R.string.transition_image);
+                        ActivityOptionsCompat options=ActivityOptionsCompat.makeSceneTransitionAnimation((Activity)mCtx,ivPoster,transitionName);
+                        mCtx.startActivity(intent,options.toBundle());
                     }
 
                 }

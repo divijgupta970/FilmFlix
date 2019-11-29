@@ -6,7 +6,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
+import android.view.View;
+import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -29,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private PopularMoviesAdapter adapter;
     private List<Result> resultList;
+    private ProgressBar progressBar;
     private MainActivityViewModel mainActivityViewModel;
     private boolean isNightModeOn;
     private SharedPreferences.Editor editor;
@@ -69,8 +71,28 @@ public class MainActivity extends AppCompatActivity {
         }
         isNightModeOn=sharedPref.getBoolean("isNightModeOn",defaultValue);
         Log.d("Testing123","isNightModeOn:"+isNightModeOn);
+
+        progressBar=findViewById(R.id.pbMain);
+        progressBar.setVisibility(View.VISIBLE);
         getPopularMovies();
 
+    }
+
+
+    private void getPopularMovies() {
+        mainActivityViewModel.getAllMovies().observe(this, new Observer<List<Result>>() {
+            @Override
+            public void onChanged(List<Result> results) {
+                resultList=results;
+                setUpRecyclerView();
+            }
+        });
+    }
+
+    private void setUpRecyclerView() {
+        adapter=new PopularMoviesAdapter(resultList,this);
+        recyclerView.setAdapter(adapter);
+        progressBar.setVisibility(View.INVISIBLE);
     }
 
     @Override
@@ -112,20 +134,5 @@ public class MainActivity extends AppCompatActivity {
             default:
                 return false;
         }
-    }
-
-    private void getPopularMovies() {
-        mainActivityViewModel.getAllMovies().observe(this, new Observer<List<Result>>() {
-            @Override
-            public void onChanged(List<Result> results) {
-                resultList=results;
-                setUpRecyclerView();
-            }
-        });
-    }
-
-    private void setUpRecyclerView() {
-        adapter=new PopularMoviesAdapter(resultList,this);
-        recyclerView.setAdapter(adapter);
     }
 }

@@ -35,23 +35,7 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
-        MovieDataService movieDataService = RetrofitInstance.getService();
-        Call<Movie> call = movieDataService.getPopularMovies(BuildConfig.apikey);
-        call.enqueue(new Callback<Movie>() {
-            @Override
-            public void onResponse(Call<Movie> call, Response<Movie> response) {
-                Movie movieResponse=response.body();
-                if (movieResponse != null && movieResponse.getResults()!=null){
-                    resultList=movieResponse.getResults();
-                }
-                setUpRecyclerViews();
-            }
 
-            @Override
-            public void onFailure(Call<Movie> call, Throwable t) {
-
-            }
-        });
 
     }
 

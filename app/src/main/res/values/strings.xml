@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Filmflix</string>
+    <string name="title_activity_view_movie">ViewMovieActivity</string>
+    <string name="night_mode">Night Mode</string>
 </resources>

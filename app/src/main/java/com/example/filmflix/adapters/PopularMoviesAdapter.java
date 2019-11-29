@@ -1,6 +1,7 @@
 package com.example.filmflix.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.filmflix.R;
+import com.example.filmflix.activities.ViewMovieActivity;
 import com.example.filmflix.model.Result;
 
 import java.util.List;
@@ -73,6 +75,19 @@ public class PopularMoviesAdapter extends RecyclerView.Adapter<PopularMoviesAdap
             tvTitle=itemView.findViewById(R.id.tvTitle);
             ivPoster=itemView.findViewById(R.id.ivPoster);
             btnLike=itemView.findViewById(R.id.btnLike);
+            itemView.findViewById(R.id.card_layout).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int position=getAdapterPosition();
+                    if (position!=RecyclerView.NO_POSITION){
+                        Result result=resultList.get(getAdapterPosition());
+                        Intent intent=new Intent(mCtx,ViewMovieActivity.class);
+                        intent.putExtra("movie",result);
+                        mCtx.startActivity(intent);
+                    }
+
+                }
+            });
         }
     }
 }

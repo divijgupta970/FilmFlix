@@ -6,6 +6,7 @@ import android.os.Parcelable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Result implements Parcelable
@@ -40,7 +41,7 @@ public class Result implements Parcelable
     private String originalTitle;
     @SerializedName("genre_ids")
     @Expose
-    private List<Integer> genreIds = null;
+    private List<Integer> genreIds =new ArrayList<>();
     @SerializedName("title")
     @Expose
     private String title;

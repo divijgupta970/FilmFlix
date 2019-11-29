@@ -42,7 +42,13 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         recyclerView=findViewById(R.id.rvMain);
-        recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+
+        if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
+            recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+
+        else
+            recyclerView.setLayoutManager(new GridLayoutManager(this, 4));
+
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
         mainActivityViewModel= ViewModelProviders.of(this).get(MainActivityViewModel.class);

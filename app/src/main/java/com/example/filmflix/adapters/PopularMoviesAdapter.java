@@ -4,6 +4,10 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -33,15 +37,25 @@ public class PopularMoviesAdapter extends RecyclerView.Adapter<PopularMoviesAdap
     }
 
     @Override
-    public void onBindViewHolder(@NonNull PopularMoviesViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final PopularMoviesViewHolder holder, int position) {
         Result result=resultList.get(position);
         holder.tvTitle.setText(result.getTitle());
         holder.tvRating.setText(String.valueOf(result.getVoteAverage()));
+
+        holder.btnLike.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                Animation animation = AnimationUtils.loadAnimation(mCtx, R.anim.anim_like);
+                holder.btnLike.startAnimation(animation);
+            }
+        });
+
         String imagePath="https://image.tmdb.org/t/p/w500"+result.getPosterPath();
         Glide.with(mCtx)
                 .load(imagePath)
                 .placeholder(mCtx.getDrawable(R.drawable.placeholder))
                 .into(holder.ivPoster);
+
     }
 
     @Override
@@ -52,11 +66,13 @@ public class PopularMoviesAdapter extends RecyclerView.Adapter<PopularMoviesAdap
     public class PopularMoviesViewHolder extends RecyclerView.ViewHolder{
         private ImageView ivPoster;
         private TextView tvRating,tvTitle;
+        private CheckBox btnLike;
         public PopularMoviesViewHolder(@NonNull View itemView) {
             super(itemView);
             tvRating=itemView.findViewById(R.id.tvRating);
             tvTitle=itemView.findViewById(R.id.tvTitle);
             ivPoster=itemView.findViewById(R.id.ivPoster);
+            btnLike=itemView.findViewById(R.id.btnLike);
         }
     }
 }

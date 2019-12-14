@@ -17,6 +17,7 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.example.filmflix.R;
 import com.example.filmflix.model.Result;
+import com.google.android.material.appbar.CollapsingToolbarLayout;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -25,13 +26,12 @@ import java.util.Date;
 public class ViewMovieActivity extends AppCompatActivity {
     private Result movie;
     private ImageView ivPoster;
-    private TextView tvTitle,tvDesc,tvDate;
+    private TextView tvDesc,tvDate;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_movie);
         postponeEnterTransition();
-        tvTitle=findViewById(R.id.tvTitle);
         tvDesc=findViewById(R.id.tvDesc);
         tvDate=findViewById(R.id.tvReleaseDate);
         ivPoster=findViewById(R.id.ivPoster);
@@ -43,9 +43,10 @@ public class ViewMovieActivity extends AppCompatActivity {
 
         Intent intent=getIntent();
         movie=intent.getParcelableExtra("movie");
-        getSupportActionBar().setTitle(movie.getTitle());
 
-        tvTitle.setText(movie.getTitle());
+        CollapsingToolbarLayout collapsingToolbarLayout = findViewById(R.id.collapsing_toolbar);
+        collapsingToolbarLayout.setTitle(movie.getTitle());
+
         tvDesc.setText(movie.getOverview());
 
         String imagePath="https://image.tmdb.org/t/p/w500"+movie.getPosterPath();

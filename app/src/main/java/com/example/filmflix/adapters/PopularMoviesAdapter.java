@@ -16,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.core.app.ActivityOptionsCompat;
 import androidx.core.util.Pair;
 import androidx.databinding.DataBindingUtil;
+import androidx.paging.PagedListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.filmflix.R;
@@ -23,14 +24,12 @@ import com.example.filmflix.activities.ViewMovieActivity;
 import com.example.filmflix.databinding.CardMainBinding;
 import com.example.filmflix.model.Result;
 
-import java.util.List;
+public class PopularMoviesAdapter extends PagedListAdapter<Result, PopularMoviesAdapter.PopularMoviesViewHolder> {
 
-public class PopularMoviesAdapter extends RecyclerView.Adapter<PopularMoviesAdapter.PopularMoviesViewHolder> {
-    private List<Result> resultList;
     private Context mCtx;
 
-    public PopularMoviesAdapter(List<Result> resultList, Context mCtx) {
-        this.resultList = resultList;
+    public PopularMoviesAdapter(Context mCtx) {
+        super(Result.CALLBACK);
         this.mCtx = mCtx;
     }
 
@@ -44,7 +43,7 @@ public class PopularMoviesAdapter extends RecyclerView.Adapter<PopularMoviesAdap
 
     @Override
     public void onBindViewHolder(@NonNull final PopularMoviesViewHolder holder, int position) {
-        Result result = resultList.get(position);
+        Result result = getItem(position);
 
         holder.cardMainBinding.setMovie(result);
 
@@ -59,10 +58,6 @@ public class PopularMoviesAdapter extends RecyclerView.Adapter<PopularMoviesAdap
 
     }
 
-    @Override
-    public int getItemCount() {
-        return resultList.size();
-    }
 
     public class PopularMoviesViewHolder extends RecyclerView.ViewHolder {
         private ImageView ivPoster;
@@ -71,7 +66,7 @@ public class PopularMoviesAdapter extends RecyclerView.Adapter<PopularMoviesAdap
 
         public PopularMoviesViewHolder(@NonNull CardMainBinding cardMainBinding) {
             super(cardMainBinding.getRoot());
-            this.cardMainBinding=cardMainBinding;
+            this.cardMainBinding = cardMainBinding;
             ivPoster = cardMainBinding.ivPoster;
             btnLike = cardMainBinding.btnLike;
             cardMainBinding.cardLayout.setOnClickListener(new View.OnClickListener() {
@@ -79,7 +74,7 @@ public class PopularMoviesAdapter extends RecyclerView.Adapter<PopularMoviesAdap
                 public void onClick(View view) {
                     int position = getAdapterPosition();
                     if (position != RecyclerView.NO_POSITION) {
-                        Result result = resultList.get(getAdapterPosition());
+                        Result result = getItem(getAdapterPosition());
                         Intent intent = new Intent(mCtx, ViewMovieActivity.class);
                         intent.putExtra("movie", result);
                         String imageTransition = mCtx.getString(R.string.transition_image);

@@ -4,10 +4,12 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.widget.ImageView;
 
+import androidx.annotation.NonNull;
 import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
 import androidx.databinding.BindingAdapter;
 import androidx.databinding.library.baseAdapters.BR;
+import androidx.recyclerview.widget.DiffUtil;
 
 import com.bumptech.glide.Glide;
 import com.example.filmflix.R;
@@ -17,8 +19,7 @@ import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Result extends BaseObservable implements Parcelable
-{
+public class Result extends BaseObservable implements Parcelable {
 
     @SerializedName("popularity")
     @Expose
@@ -34,9 +35,9 @@ public class Result extends BaseObservable implements Parcelable
     private String posterPath;
 
     @BindingAdapter({"posterPath"})
-    public static void loadImage(ImageView ivPoster,String imageURL){
+    public static void loadImage(ImageView ivPoster, String imageURL) {
         Glide.with(ivPoster.getContext())
-                .load("https://image.tmdb.org/t/p/w500"+imageURL)
+                .load("https://image.tmdb.org/t/p/w500" + imageURL)
                 .placeholder(R.drawable.placeholder)
                 .into(ivPoster);
     }
@@ -58,7 +59,7 @@ public class Result extends BaseObservable implements Parcelable
     private String originalTitle;
     @SerializedName("genre_ids")
     @Expose
-    private List<Integer> genreIds =new ArrayList<>();
+    private List<Integer> genreIds = new ArrayList<>();
     @SerializedName("title")
     @Expose
     private String title;
@@ -85,8 +86,7 @@ public class Result extends BaseObservable implements Parcelable
             return (new Result[size]);
         }
 
-    }
-            ;
+    };
 
     protected Result(Parcel in) {
         this.popularity = ((Double) in.readValue((Double.class.getClassLoader())));
@@ -268,6 +268,18 @@ public class Result extends BaseObservable implements Parcelable
     public int describeContents() {
         return 0;
     }
+
+    public static final DiffUtil.ItemCallback<Result> CALLBACK = new DiffUtil.ItemCallback<Result>() {
+        @Override
+        public boolean areItemsTheSame(@NonNull Result oldItem, @NonNull Result newItem) {
+            return oldItem.id == newItem.id;
+        }
+
+        @Override
+        public boolean areContentsTheSame(@NonNull Result oldItem, @NonNull Result newItem) {
+            return true;
+        }
+    };
 
 }
 

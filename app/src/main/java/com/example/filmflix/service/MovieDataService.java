@@ -7,6 +7,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Query;
 
 public interface MovieDataService {
+
     @GET("movie/popular")
-    Call<Movie> getPopularMovies(@Query("api_key") String apiKey);
+    Call<Movie> getPopularMoviesWithPaging(@Query("api_key") String apiKey,@Query("page") long page);
 }

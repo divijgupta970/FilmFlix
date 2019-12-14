@@ -11,16 +11,16 @@ import android.view.animation.AnimationUtils;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityOptionsCompat;
 import androidx.core.util.Pair;
+import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.example.filmflix.R;
 import com.example.filmflix.activities.ViewMovieActivity;
+import com.example.filmflix.databinding.CardMainBinding;
 import com.example.filmflix.model.Result;
 
 import java.util.List;
@@ -37,15 +37,16 @@ public class PopularMoviesAdapter extends RecyclerView.Adapter<PopularMoviesAdap
     @NonNull
     @Override
     public PopularMoviesViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v=LayoutInflater.from(mCtx).inflate(R.layout.card_main,parent,false);
-        return new PopularMoviesViewHolder(v);
+
+        CardMainBinding cardMainBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.card_main, parent, false);
+        return new PopularMoviesViewHolder(cardMainBinding);
     }
 
     @Override
     public void onBindViewHolder(@NonNull final PopularMoviesViewHolder holder, int position) {
-        Result result=resultList.get(position);
-        holder.tvTitle.setText(result.getTitle());
-        holder.tvRating.setText(String.valueOf(result.getVoteAverage()));
+        Result result = resultList.get(position);
+
+        holder.cardMainBinding.setMovie(result);
 
         holder.btnLike.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -55,11 +56,6 @@ public class PopularMoviesAdapter extends RecyclerView.Adapter<PopularMoviesAdap
             }
         });
 
-        String imagePath="https://image.tmdb.org/t/p/w500"+result.getPosterPath();
-        Glide.with(mCtx)
-                .load(imagePath)
-                .placeholder(mCtx.getDrawable(R.drawable.placeholder))
-                .into(holder.ivPoster);
 
     }
 
@@ -68,29 +64,29 @@ public class PopularMoviesAdapter extends RecyclerView.Adapter<PopularMoviesAdap
         return resultList.size();
     }
 
-    public class PopularMoviesViewHolder extends RecyclerView.ViewHolder{
+    public class PopularMoviesViewHolder extends RecyclerView.ViewHolder {
         private ImageView ivPoster;
-        private TextView tvRating,tvTitle;
         private CheckBox btnLike;
-        public PopularMoviesViewHolder(@NonNull View itemView) {
-            super(itemView);
-            tvRating=itemView.findViewById(R.id.tvRating);
-            tvTitle=itemView.findViewById(R.id.tvTitle);
-            ivPoster=itemView.findViewById(R.id.ivPoster);
-            btnLike=itemView.findViewById(R.id.btnLike);
-            itemView.findViewById(R.id.card_layout).setOnClickListener(new View.OnClickListener() {
+        private CardMainBinding cardMainBinding;
+
+        public PopularMoviesViewHolder(@NonNull CardMainBinding cardMainBinding) {
+            super(cardMainBinding.getRoot());
+            this.cardMainBinding=cardMainBinding;
+            ivPoster = cardMainBinding.ivPoster;
+            btnLike = cardMainBinding.btnLike;
+            cardMainBinding.cardLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    int position=getAdapterPosition();
-                    if (position!=RecyclerView.NO_POSITION){
-                        Result result=resultList.get(getAdapterPosition());
-                        Intent intent=new Intent(mCtx,ViewMovieActivity.class);
-                        intent.putExtra("movie",result);
+                    int position = getAdapterPosition();
+                    if (position != RecyclerView.NO_POSITION) {
+                        Result result = resultList.get(getAdapterPosition());
+                        Intent intent = new Intent(mCtx, ViewMovieActivity.class);
+                        intent.putExtra("movie", result);
                         String imageTransition = mCtx.getString(R.string.transition_image);
-                        Pair<View,String> p1=Pair.create((View)ivPoster,imageTransition);
+                        Pair<View, String> p1 = Pair.create((View) ivPoster, imageTransition);
 
-                        ActivityOptionsCompat options=ActivityOptionsCompat.makeSceneTransitionAnimation((Activity)mCtx,p1);
-                        mCtx.startActivity(intent,options.toBundle());
+                        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) mCtx, p1);
+                        mCtx.startActivity(intent, options.toBundle());
                     }
 
                 }

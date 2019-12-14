@@ -12,6 +12,7 @@ import android.widget.ProgressBar;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -20,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.filmflix.R;
 import com.example.filmflix.adapters.PopularMoviesAdapter;
+import com.example.filmflix.databinding.ActivityMainBinding;
 import com.example.filmflix.model.Result;
 import com.example.filmflix.viewmodels.MainActivityViewModel;
 import com.google.android.material.appbar.MaterialToolbar;
@@ -27,6 +29,8 @@ import com.google.android.material.appbar.MaterialToolbar;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
+
+    private ActivityMainBinding activityMainBinding;
     private RecyclerView recyclerView;
     private PopularMoviesAdapter adapter;
     private List<Result> resultList;
@@ -38,12 +42,12 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        activityMainBinding= DataBindingUtil.setContentView(this,R.layout.activity_main);
 
-        MaterialToolbar toolbar=findViewById(R.id.tbMain);
+        MaterialToolbar toolbar=activityMainBinding.tbMain;
         setSupportActionBar(toolbar);
 
-        recyclerView=findViewById(R.id.rvMain);
+        recyclerView=activityMainBinding.rvMain;
 
         if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
             recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
@@ -72,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
         isNightModeOn=sharedPref.getBoolean("isNightModeOn",defaultValue);
         Log.d("Testing123","isNightModeOn:"+isNightModeOn);
 
-        progressBar=findViewById(R.id.pbMain);
+        progressBar=activityMainBinding.pbMain;
         progressBar.setVisibility(View.VISIBLE);
         getPopularMovies();
 

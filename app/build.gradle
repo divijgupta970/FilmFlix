@@ -5,9 +5,12 @@ apikeyProperties.load(new FileInputStream(apikeyPropertiesFile))
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.2"
+    dataBinding{
+        enabled="true"
+    }
     defaultConfig {
         applicationId "com.example.filmflix"
-        minSdkVersion 21
+        minSdkVersion 24
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"

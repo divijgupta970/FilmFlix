@@ -4,11 +4,11 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.databinding.DataBindingUtil;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
@@ -16,38 +16,32 @@ import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.example.filmflix.R;
+import com.example.filmflix.databinding.ActivityViewMovieBinding;
 import com.example.filmflix.model.Result;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 public class ViewMovieActivity extends AppCompatActivity {
+    private ActivityViewMovieBinding activityViewMovieBinding;
     private Result movie;
     private ImageView ivPoster;
-    private TextView tvDesc,tvDate;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_view_movie);
+        activityViewMovieBinding= DataBindingUtil.setContentView(this,R.layout.activity_view_movie);
         postponeEnterTransition();
-        tvDesc=findViewById(R.id.tvDesc);
-        tvDate=findViewById(R.id.tvReleaseDate);
-        ivPoster=findViewById(R.id.ivPoster);
+        ivPoster=activityViewMovieBinding.ivPoster;
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar = activityViewMovieBinding.toolbar;
         setSupportActionBar(toolbar);
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         Intent intent=getIntent();
         movie=intent.getParcelableExtra("movie");
+        activityViewMovieBinding.setMovie(movie);
 
-        CollapsingToolbarLayout collapsingToolbarLayout = findViewById(R.id.collapsing_toolbar);
+        CollapsingToolbarLayout collapsingToolbarLayout = activityViewMovieBinding.collapsingToolbar;
         collapsingToolbarLayout.setTitle(movie.getTitle());
 
-        tvDesc.setText(movie.getOverview());
 
         String imagePath="https://image.tmdb.org/t/p/w500"+movie.getPosterPath();
         Glide.with(this)
@@ -67,18 +61,6 @@ public class ViewMovieActivity extends AppCompatActivity {
                     }
                 })
                 .into(ivPoster);
-
-        try {
-            Date dateInitial=new SimpleDateFormat("yyyy-MM-dd").parse(movie.getReleaseDate());
-            String pattern="dd MMMM, yyyy";
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
-            String dateConverted = "Released on "+simpleDateFormat.format(dateInitial);
-            tvDate.setText(dateConverted);
-        } catch (ParseException e) {
-            e.printStackTrace();
-            String s="Released on"+movie.getReleaseDate();
-            tvDate.setText(s);
-        }
 
     }
 

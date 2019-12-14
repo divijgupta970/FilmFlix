@@ -4,4 +4,5 @@
     <color name="colorPrimaryDark">#01d277</color>
     <color name="colorAccent">#01d277</color>
     <color name="iconColor">#000000</color>
+    <color name="toolbarColor">#01d277</color>
 </resources>

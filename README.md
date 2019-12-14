@@ -4,6 +4,8 @@
 <li>Retrofit</li>
 <li>MVVM pattern</li>
 <li>Light and dark themes</li>
+<li>Data binding</li>
+<li>Paging</li>
 <br>
 <br>
 <img src="screenshots/2.jpg" width="250">
@@ -28,6 +30,5 @@ TO DO:
 <br>
 <br>
 <li>Add save functionality using room</li>
-<li>Data binding</li>
 <li>Palette implementation</li>
 <li>More endpoints</li>
